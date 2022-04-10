@@ -1,0 +1,10 @@
+#Folder
+bin/
+target/
+src-gen/
+xtend-gen/
+
+# Package Files #
+*.jar
+*.war
+*.ear

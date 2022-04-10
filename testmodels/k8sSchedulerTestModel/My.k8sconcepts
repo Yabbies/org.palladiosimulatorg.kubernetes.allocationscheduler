@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<k8s:K8sStandardRequestLimit xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:k8s="org.palladiosimulator.kubernetesModel.k8sconcepts">
+  <cpu>1000</cpu>
+  <memory>2048</memory>
+</k8s:K8sStandardRequestLimit>

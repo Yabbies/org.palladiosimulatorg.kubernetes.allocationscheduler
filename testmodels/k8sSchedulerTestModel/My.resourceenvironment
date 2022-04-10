@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resourceenvironment:ResourceEnvironment xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:resenv="org.palladiosimulator.kubernetesModel.resourceenvironment" xmlns:resourceenvironment="http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.2" entityName="Cluster">
+  <resourceContainer_ResourceEnvironment id="_B0aZ0CHdEd6lJo4DCALHMw" entityName="appserver">
+    <activeResourceSpecifications_ResourceContainer id="_ssJ0QYr-EeG0c6Q1F-wA1Q">
+      <schedulingPolicy href="pathmap://PCM_MODELS/Palladio.resourcetype#ProcessorSharing"/>
+      <activeResourceType_ActiveResourceSpecification href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+      <processingRate_ProcessingResourceSpecification specification="1.0810638521955225"/>
+    </activeResourceSpecifications_ResourceContainer>
+  </resourceContainer_ResourceEnvironment>
+  <resourceContainer_ResourceEnvironment xsi:type="resenv:KubernetesNode" id="_GUTXYreIEey_eo6N0lN0NQ" entityName="WorkerNode">
+    <activeResourceSpecifications_ResourceContainer id="_2QdJMLebEey-kPQ76_4vnQ">
+      <schedulingPolicy href="pathmap://PCM_MODELS/Palladio.resourcetype#ProcessorSharing"/>
+      <activeResourceType_ActiveResourceSpecification href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+      <processingRate_ProcessingResourceSpecification specification="1.0810638521955225"/>
+    </activeResourceSpecifications_ResourceContainer>
+    <memory>4096</memory>
+    <cpu>2000</cpu>
+  </resourceContainer_ResourceEnvironment>
+  <resourceContainer_ResourceEnvironment xsi:type="resenv:KubernetesNode" id="_R13WEreIEey_eo6N0lN0NQ" entityName="MasterNode" isMasterNode="true">
+    <activeResourceSpecifications_ResourceContainer id="_97hXcLebEey-kPQ76_4vnQ">
+      <schedulingPolicy href="pathmap://PCM_MODELS/Palladio.resourcetype#ProcessorSharing"/>
+      <activeResourceType_ActiveResourceSpecification href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+      <processingRate_ProcessingResourceSpecification specification="1.0810638521955225"/>
+    </activeResourceSpecifications_ResourceContainer>
+    <nestedResourceContainers__ResourceContainer xsi:type="resenv:RunningPodNestedResourceContainer" id="_RgVa5LecEey-kPQ76_4vnQ" entityName="RunningTestPodResourceContainer">
+      <activeResourceSpecifications_ResourceContainer id="_T-Q14LecEey-kPQ76_4vnQ">
+        <schedulingPolicy href="pathmap://PCM_MODELS/Palladio.resourcetype#ProcessorSharing"/>
+        <activeResourceType_ActiveResourceSpecification href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+        <processingRate_ProcessingResourceSpecification specification="1.0810638521955225"/>
+      </activeResourceSpecifications_ResourceContainer>
+    </nestedResourceContainers__ResourceContainer>
+    <memory>8096</memory>
+    <cpu>1000</cpu>
+  </resourceContainer_ResourceEnvironment>
+</resourceenvironment:ResourceEnvironment>

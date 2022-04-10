@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Allocationscheduler
+Bundle-SymbolicName: org.palladiosimulator.kubernetes.allocationscheduler
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: org.palladiosimulator.kubernetes.allocationscheduler
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Require-Bundle: org.palladiosimulator.kubernetes;bundle-version="1.0.0",
+ tools.mdsd.junit5utils
+Import-Package: org.junit.jupiter.api.extension

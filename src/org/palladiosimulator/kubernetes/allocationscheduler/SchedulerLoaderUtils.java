@@ -13,8 +13,14 @@ import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceEnvironment;
 import org.palladiosimulator.pcm.system.System;
 
+/**
+ * This class provides utility methods to load models from files.
+ * @author Nathan
+ *
+ */
 public class SchedulerLoaderUtils {
     
+    // paths to the used model files.
     private final static String k8sSchedulerTestModelSystem = "testmodels/k8sSchedulerTestModel/default.system";
     private final static String k8sSchedulerTestModelDeployment = "testmodels/k8sSchedulerTestModel/Deployment.resourceenvironment";
     private final static String k8sSchedulerTestModelRepository = "testmodels/k8sSchedulerTestModel/default.repository";

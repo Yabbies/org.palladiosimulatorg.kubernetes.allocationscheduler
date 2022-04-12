@@ -1,0 +1,187 @@
+package org.palladiosimulator.kubernetes.allocationscheduler;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
+import org.eclipse.emf.common.util.EList;
+import org.palladiosimulator.pcm.allocation.Allocation;
+import org.palladiosimulator.pcm.allocation.AllocationContext;
+import org.palladiosimulator.pcm.core.composition.AssemblyConnector;
+import org.palladiosimulator.pcm.core.composition.AssemblyContext;
+import org.palladiosimulator.pcm.core.composition.Connector;
+import org.palladiosimulator.pcm.repository.OperationRequiredRole;
+import org.palladiosimulator.pcm.repository.RepositoryComponent;
+import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
+import org.palladiosimulator.pcm.resourceenvironment.ResourceEnvironment;
+import org.palladiosimulator.pcm.system.System;
+
+import kubernetesModel.repository.Pod;
+import kubernetesModel.resourceenvironment.KubernetesNode;
+import kubernetesModel.repository.Container;
+
+/**
+ * This class provides utility methods needed for the K8sAllocationScheduler.
+ * 
+ * @author Nathan
+ *
+ */
+public class SchedulerUtils {
+
+    /**
+     * Returns a collection of pods from the system.
+     * 
+     * @param system
+     *            The system with the pods.
+     * @return Collection of Pods that exist in the system.
+     */
+    protected static List<Pod> getPods(System system) {
+        List<AssemblyContext> contexts = system.getAssemblyContexts__ComposedStructure();
+
+        List<Pod> pods = contexts.stream()
+            .map(AssemblyContext::getEncapsulatedComponent__AssemblyContext)
+            .filter(Pod.class::isInstance)
+            .map(Pod.class::cast)
+            .collect(Collectors.toList());
+        return pods;
+    }
+
+    /**
+     * Returns all the KubernetesNodes in the given ResourceEnvironment. Usually the
+     * ResourceEnvironment is meant to be a cluster.
+     * 
+     * @param cluster
+     *            ResourceEnvironment representing the K8s Cluster with the KubernetesNodes
+     * @return Collection of KubernetesNodes in the ResourceEnvironment/Cluster
+     */
+    protected static List<KubernetesNode> getNodes(ResourceEnvironment cluster) {
+        List<ResourceContainer> containers = cluster.getResourceContainer_ResourceEnvironment();
+
+        List<KubernetesNode> nodes = containers.stream()
+            .filter(KubernetesNode.class::isInstance)
+            .map(KubernetesNode.class::cast)
+            .collect(Collectors.toList());
+        return nodes;
+    }
+
+    /**
+     * Returns all unscheduled pods by comparing the assembled pods from the system - desired state
+     * of instances - with the current state of the cluster - the current allocation - and returns
+     * the not allocated pods.
+     * 
+     * @param system
+     * @param allocation
+     * @return unallocated pods from the system.
+     */
+    protected static List<Pod> getUnallocatedPods(System system, Allocation allocation) {
+        List<Pod> pods = getPods(system);
+        List<AllocationContext> allocationContexts = allocation.getAllocationContexts_Allocation();
+        List<Pod> scheduledPods = allocationContexts.stream()
+            .map(context -> context.getAssemblyContext_AllocationContext())
+            .map(assembly -> assembly.getEncapsulatedComponent__AssemblyContext())
+            .filter(Pod.class::isInstance)
+            .map(Pod.class::cast)
+            .collect(Collectors.toList());
+        pods.removeAll(scheduledPods);
+        return pods;
+    }
+
+    /**
+     * This method calculates for a given KubernetesNode and an Allocation, how much free cpu share
+     * is left on this node.
+     * 
+     * @param node
+     *            for which the free share needs to be calculated.
+     * @param allocation
+     *            Allocation for which the left free cpu share is calculated.
+     * @return int that represents the free cpu share of the node.
+     */
+    protected static int calculateNodesUnrequestedCPUShare(KubernetesNode node, Allocation allocation) {
+        int cpuSpecification = node.getCpu();
+        List<AllocationContext> allocationContexts = allocation.getAllocationContexts_Allocation();
+        List<ResourceContainer> nodeWithNestedContainers = node.getNestedResourceContainers__ResourceContainer();
+        nodeWithNestedContainers.add(node);
+        // Filter Allocations on this node with Allocations on NestedResourceContainers.
+
+        List<AllocationContext> contextsAllocatedOnNode = new ArrayList<AllocationContext>();
+        for (ResourceContainer container : nodeWithNestedContainers) {
+            List<AllocationContext> contextsToAdd = allocationContexts.stream()
+                .filter(ac -> ac.getResourceContainer_AllocationContext()
+                    .equals(container))
+                .collect(Collectors.toList());
+            contextsAllocatedOnNode.addAll(contextsToAdd);
+        }
+        // Only containers can have requests and limits. => Remove all not containers.
+        List<Container> containerAllocatedOnNode = contextsAllocatedOnNode.stream()
+            .map(context -> context.getAssemblyContext_AllocationContext())
+            .map(assembly -> assembly.getEncapsulatedComponent__AssemblyContext())
+            .filter(Container.class::isInstance)
+            .map(Container.class::cast)
+            .collect(Collectors.toList());
+
+        int allocatedCPUShare = 0;
+
+        for (Container container : containerAllocatedOnNode) {
+            // Check whether the container has a request as this is an optional attribute.
+            if (!container.getStandardRequest()
+                .getCpu()
+                .isEmpty()) {
+                allocatedCPUShare += container.getStandardRequest()
+                    .getCpu()
+                    .get(0);
+            }
+        }
+        return cpuSpecification - allocatedCPUShare;
+    }
+
+    /**
+     * This method calculates for a given KubernetesNode and an Allocation, how much free memory
+     * is left on this node.
+     * 
+     * @param node
+     *            for which the free share needs to be calculated.
+     * @param allocation
+     *            for which the left free memory share is calculated.
+     * @return int that represents the free memory share of the node.
+     */
+    protected static int calculateNodesUnrequestedMemory(KubernetesNode node, Allocation allocation) {
+        int memorySpecification = node.getMemory();
+        List<AllocationContext> allocationContexts = allocation.getAllocationContexts_Allocation();
+        List<ResourceContainer> nodeWithNestedContainers = node.getNestedResourceContainers__ResourceContainer();
+        nodeWithNestedContainers.add(node);
+        // Filter Allocations on this node with Allocations on NestedResourceContainers.
+
+        List<AllocationContext> contextsAllocatedOnNode = new ArrayList<AllocationContext>();
+        for (ResourceContainer container : nodeWithNestedContainers) {
+            List<AllocationContext> contextsToAdd = allocationContexts.stream()
+                .filter(ac -> ac.getResourceContainer_AllocationContext()
+                    .equals(container))
+                .collect(Collectors.toList());
+            contextsAllocatedOnNode.addAll(contextsToAdd);
+        }
+        // Only containers can have requests and limits. => Remove all not container objects.
+        List<Container> containerAllocatedOnNode = contextsAllocatedOnNode.stream()
+            .map(context -> context.getAssemblyContext_AllocationContext())
+            .map(assembly -> assembly.getEncapsulatedComponent__AssemblyContext())
+            .filter(Container.class::isInstance)
+            .map(Container.class::cast)
+            .collect(Collectors.toList());
+
+        int allocatedMemory = 0;
+
+        for (Container container : containerAllocatedOnNode) {
+            // Check whether the container has a request as this is an optional attribute.
+            if (!container.getStandardRequest()
+                .getMemory()
+                .isEmpty()) {
+                allocatedMemory += container.getStandardRequest()
+                    .getMemory()
+                    .get(0);
+            }
+        }
+        return memorySpecification - allocatedMemory;
+    }
+
+}

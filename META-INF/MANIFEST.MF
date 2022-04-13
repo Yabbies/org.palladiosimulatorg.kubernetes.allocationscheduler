@@ -7,5 +7,8 @@ Automatic-Module-Name: org.palladiosimulator.kubernetes.allocationscheduler
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.palladiosimulator.kubernetes;bundle-version="1.0.0",
  tools.mdsd.junit5utils
-Import-Package: org.junit.jupiter.api;version="5.8.1",
- org.junit.jupiter.api.extension
+Import-Package: org.apache.log4j;version="1.2.15",
+ org.junit.jupiter.api;version="5.8.1",
+ org.junit.jupiter.api.extension,
+ tools.mdsd.library.standalone.initialization,
+ tools.mdsd.library.standalone.initialization.core

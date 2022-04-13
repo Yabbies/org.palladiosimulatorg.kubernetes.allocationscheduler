@@ -19,69 +19,62 @@ import org.palladiosimulator.pcm.system.System;
  *
  */
 public class SchedulerLoaderUtils {
-    
-    // paths to the used model files.
-    private final static String k8sSchedulerTestModelSystem = "testmodels/k8sSchedulerTestModel/default.system";
-    private final static String k8sSchedulerTestModelDeployment = "testmodels/k8sSchedulerTestModel/Deployment.resourceenvironment";
-    private final static String k8sSchedulerTestModelRepository = "testmodels/k8sSchedulerTestModel/default.repository";
-    private final static String k8sSchedulerTestModelResourceEnvironment = "testmodels/k8sSchedulerTestModel/My.resourceenvironment";
-    private final static String k8sSchedulerTestModelAllocation = "testmodels/k8sSchedulerTestModel/default.allocation";
-    
-    protected static System loadSystem() {
+
+    public static System loadSystem(String path) {
         Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
         Map<String, Object> m = reg.getExtensionToFactoryMap();
         m.put("system", new XMIResourceFactoryImpl());
 
         ResourceSet resSet = new ResourceSetImpl();
-        Resource resource = resSet.getResource(URI.createFileURI(new File(k8sSchedulerTestModelSystem).getAbsolutePath()), true);
+        Resource resource = resSet.getResource(URI.createFileURI(new File(path).getAbsolutePath()), true);
         System system = (System) resource.getContents()
             .get(0);
         return system;
     }
     
-    protected static Repository loadRepository() {
+    public static Repository loadRepository(String path) {
         Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
         Map<String, Object> m = reg.getExtensionToFactoryMap();
         m.put("repository", new XMIResourceFactoryImpl());
 
         ResourceSet resSet = new ResourceSetImpl();
-        Resource resource = resSet.getResource(URI.createFileURI(new File(k8sSchedulerTestModelRepository).getAbsolutePath()), true);
+        Resource resource = resSet.getResource(URI.createFileURI(new File(path).getAbsolutePath()), true);
         Repository repository = (Repository) resource.getContents()
             .get(0);
         return repository;
     }
     
-    protected static ResourceEnvironment loadDeployment() {
+    public static ResourceEnvironment loadDeployment(String path) {
         Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
         Map<String, Object> m = reg.getExtensionToFactoryMap();
         m.put("resourceenvironment", new XMIResourceFactoryImpl());
 
         ResourceSet resSet = new ResourceSetImpl();
-        Resource resource = resSet.getResource(URI.createFileURI(new File(k8sSchedulerTestModelDeployment).getAbsolutePath()), true);
+        Resource resource = resSet.getResource(URI.createFileURI(new File(path).getAbsolutePath()), true);
         ResourceEnvironment deployment = (ResourceEnvironment) resource.getContents()
             .get(0);
         return deployment;
     }
     
-    protected static ResourceEnvironment loadResourceEnvironment() {
+    public static ResourceEnvironment loadResourceEnvironment(String path) {
         Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
         Map<String, Object> m = reg.getExtensionToFactoryMap();
         m.put("resourceenvironment", new XMIResourceFactoryImpl());
 
         ResourceSet resSet = new ResourceSetImpl();
-        Resource resource = resSet.getResource(URI.createFileURI(new File(k8sSchedulerTestModelResourceEnvironment).getAbsolutePath()), true);
+        Resource resource = resSet.getResource(URI.createFileURI(new File(path).getAbsolutePath()), true);
         ResourceEnvironment resourceEnvironment = (ResourceEnvironment) resource.getContents()
             .get(0);
         return resourceEnvironment;
     }
     
-    protected static Allocation loadAllocation() {
+    public static Allocation loadAllocation(String path) {
         Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
         Map<String, Object> m = reg.getExtensionToFactoryMap();
         m.put("resourceenvironment", new XMIResourceFactoryImpl());
 
         ResourceSet resSet = new ResourceSetImpl();
-        Resource resource = resSet.getResource(URI.createFileURI(new File(k8sSchedulerTestModelAllocation).getAbsolutePath()), true);
+        Resource resource = resSet.getResource(URI.createFileURI(new File(path).getAbsolutePath()), true);
         Allocation allocation = (Allocation) resource.getContents()
             .get(0);
         return allocation;

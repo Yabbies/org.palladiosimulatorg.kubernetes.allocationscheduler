@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:composition="http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.2" xmlns:repo="org.palladiosimulator.kubernetesModel.repository" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.2" xmlns:seff="http://palladiosimulator.org/PalladioComponentModel/SEFF/5.2" id="_dqFLECHbEd6tG9VclJz3cw" entityName="defaultRepository">
+  <components__Repository xsi:type="repository:BasicComponent" id="_os1t4CHbEd62GabW1zGSBw" entityName="testComponent">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_qZKs0CHbEd62GabW1zGSBw" entityName="Provided_AnInterface_AComponent" providedInterface__OperationProvidedRole="_n7g-oCHbEd62GabW1zGSBw"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="12345" describedService__SEFF="_KjhikgzkEeCFg86gxKwVPw">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_qZUd0CHbEd62GabW1zGSBw" successor_AbstractAction="_tfAiwCHjEd6ZSMvOJK-6LQ"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_qZUd0SHbEd62GabW1zGSBw" predecessor_AbstractAction="_tfAiwCHjEd6ZSMvOJK-6LQ"/>
+      <steps_Behaviour xsi:type="seff:BranchAction" id="_tfAiwCHjEd6ZSMvOJK-6LQ" entityName="branch" predecessor_AbstractAction="_qZUd0CHbEd62GabW1zGSBw" successor_AbstractAction="_qZUd0SHbEd62GabW1zGSBw">
+        <branches_Branch xsi:type="seff:ProbabilisticBranchTransition" id="_vN34UCHjEd6ZSMvOJK-6LQ" branchProbability="0.3">
+          <branchBehaviour_BranchTransition id="_ssGw84r-EeG0c6Q1F-wA1Q">
+            <steps_Behaviour xsi:type="seff:StartAction" id="_vN34USHjEd6ZSMvOJK-6LQ" successor_AbstractAction="_rl6MwCHbEd62GabW1zGSBw"/>
+            <steps_Behaviour xsi:type="seff:StopAction" id="_vN34UiHjEd6ZSMvOJK-6LQ" predecessor_AbstractAction="_rl6MwCHbEd62GabW1zGSBw"/>
+            <steps_Behaviour xsi:type="seff:InternalAction" id="_rl6MwCHbEd62GabW1zGSBw" entityName="compute" predecessor_AbstractAction="_vN34USHjEd6ZSMvOJK-6LQ" successor_AbstractAction="_vN34UiHjEd6ZSMvOJK-6LQ">
+              <resourceDemand_Action>
+                <specification_ParametericResourceDemand specification="Exp(1)"/>
+                <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+              </resourceDemand_Action>
+            </steps_Behaviour>
+          </branchBehaviour_BranchTransition>
+        </branches_Branch>
+        <branches_Branch xsi:type="seff:ProbabilisticBranchTransition" id="_zcoXwCHjEd6ZSMvOJK-6LQ" branchProbability="0.7">
+          <branchBehaviour_BranchTransition id="_ssGw-Yr-EeG0c6Q1F-wA1Q">
+            <steps_Behaviour xsi:type="seff:StartAction" id="_zcoXwSHjEd6ZSMvOJK-6LQ" successor_AbstractAction="_0eyYUCHjEd6ZSMvOJK-6LQ"/>
+            <steps_Behaviour xsi:type="seff:StopAction" id="_zcoXwiHjEd6ZSMvOJK-6LQ" predecessor_AbstractAction="_0eyYUCHjEd6ZSMvOJK-6LQ"/>
+            <steps_Behaviour xsi:type="seff:InternalAction" id="_0eyYUCHjEd6ZSMvOJK-6LQ" entityName="computeMore" predecessor_AbstractAction="_zcoXwSHjEd6ZSMvOJK-6LQ" successor_AbstractAction="_zcoXwiHjEd6ZSMvOJK-6LQ">
+              <resourceDemand_Action>
+                <specification_ParametericResourceDemand specification="DoublePDF[ (1.0; 0.25000000) (2.0; 0.50000000) (3.0; 0.25000000) ]"/>
+                <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+              </resourceDemand_Action>
+            </steps_Behaviour>
+          </branchBehaviour_BranchTransition>
+        </branches_Branch>
+      </steps_Behaviour>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repo:Container" id="_f7om0LecEey-kPQ76_4vnQ" entityName="testContainer" containerMemoryRequest="500" containerMemoryLimit="1500" containerCPURequest="1000" containerCPULimit="2000">
+    <assemblyContexts__ComposedStructure id="_uvhccLedEeyyHJjz7N8N5Q" entityName="containersComponent" encapsulatedComponent__AssemblyContext="_os1t4CHbEd62GabW1zGSBw"/>
+    <connectors__ComposedStructure xsi:type="composition:ProvidedDelegationConnector" id="_8ffMZLedEeyyHJjz7N8N5Q" entityName="testInterfaceContainerDelegation" innerProvidedRole_ProvidedDelegationConnector="_qZKs0CHbEd62GabW1zGSBw" outerProvidedRole_ProvidedDelegationConnector="_59ctf7edEeyyHJjz7N8N5Q" assemblyContext_ProvidedDelegationConnector="_uvhccLedEeyyHJjz7N8N5Q"/>
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_59ctf7edEeyyHJjz7N8N5Q" entityName="containerRole" providedInterface__OperationProvidedRole="_n7g-oCHbEd62GabW1zGSBw"/>
+    <standardLimit href="My.k8sconcepts#/"/>
+    <standardRequest href="My.k8sconcepts#/"/>
+  </components__Repository>
+  <components__Repository xsi:type="repo:Pod" id="_C3nzRLeeEeyyHJjz7N8N5Q" entityName="testPodTemplate" Containers="_f7om0LecEey-kPQ76_4vnQ">
+    <assemblyContexts__ComposedStructure id="_L6m2kLeeEeyyHJjz7N8N5Q" entityName="containerInPod" encapsulatedComponent__AssemblyContext="_f7om0LecEey-kPQ76_4vnQ"/>
+    <connectors__ComposedStructure xsi:type="composition:ProvidedDelegationConnector" id="_VpQtNLeeEeyyHJjz7N8N5Q" entityName="podServiceDelegation" innerProvidedRole_ProvidedDelegationConnector="_59ctf7edEeyyHJjz7N8N5Q" outerProvidedRole_ProvidedDelegationConnector="_R3PNH7eeEeyyHJjz7N8N5Q" assemblyContext_ProvidedDelegationConnector="_L6m2kLeeEeyyHJjz7N8N5Q"/>
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_R3PNH7eeEeyyHJjz7N8N5Q" entityName="podServiceRole" providedInterface__OperationProvidedRole="_n7g-oCHbEd62GabW1zGSBw"/>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_mOKosLhIEeyjjf2HilH6cg" entityName="testInterfaceServiceLoadBalancer">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_JS4GobhfEeyjjf2HilH6cg" entityName="serviceInterfaceProviding" providedInterface__OperationProvidedRole="_n7g-oCHbEd62GabW1zGSBw"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_a1vgdbhfEeyjjf2HilH6cg" entityName="serviceDelegationToPodsRequiring" requiredInterface__OperationRequiredRole="_n7g-oCHbEd62GabW1zGSBw"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_fMGct7hfEeyjjf2HilH6cg">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_jD3_grhfEeyjjf2HilH6cg" entityName="start" successor_AbstractAction="_nPiusbhfEeyjjf2HilH6cg"/>
+      <steps_Behaviour xsi:type="seff:BranchAction" id="_nPiusbhfEeyjjf2HilH6cg" predecessor_AbstractAction="_jD3_grhfEeyjjf2HilH6cg" successor_AbstractAction="_pIks5LhfEeyjjf2HilH6cg">
+        <branches_Branch xsi:type="seff:ProbabilisticBranchTransition" id="_sLo1QrhfEeyjjf2HilH6cg" entityName="Pod1" branchProbability="1.0">
+          <branchBehaviour_BranchTransition id="_YNPXsLhgEeyjjf2HilH6cg">
+            <steps_Behaviour xsi:type="seff:StopAction" id="_ZPHEYLhgEeyjjf2HilH6cg" predecessor_AbstractAction="_asfoZrhgEeyjjf2HilH6cg"/>
+            <steps_Behaviour xsi:type="seff:StartAction" id="_aMockrhgEeyjjf2HilH6cg" successor_AbstractAction="_asfoZrhgEeyjjf2HilH6cg"/>
+            <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_asfoZrhgEeyjjf2HilH6cg" predecessor_AbstractAction="_aMockrhgEeyjjf2HilH6cg" successor_AbstractAction="_ZPHEYLhgEeyjjf2HilH6cg" calledService_ExternalService="_KjhikgzkEeCFg86gxKwVPw" role_ExternalService="_a1vgdbhfEeyjjf2HilH6cg"/>
+          </branchBehaviour_BranchTransition>
+        </branches_Branch>
+      </steps_Behaviour>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_pIks5LhfEeyjjf2HilH6cg" entityName="stop" predecessor_AbstractAction="_nPiusbhfEeyjjf2HilH6cg"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_n7g-oCHbEd62GabW1zGSBw" entityName="testInterfaceService">
+    <signatures__OperationInterface id="_KjhikgzkEeCFg86gxKwVPw" entityName="doSomething"/>
+  </interfaces__Repository>
+</repository:Repository>

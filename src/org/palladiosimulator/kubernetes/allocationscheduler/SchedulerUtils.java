@@ -1,26 +1,19 @@
 package org.palladiosimulator.kubernetes.allocationscheduler;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-import org.eclipse.emf.common.util.EList;
 import org.palladiosimulator.pcm.allocation.Allocation;
 import org.palladiosimulator.pcm.allocation.AllocationContext;
-import org.palladiosimulator.pcm.core.composition.AssemblyConnector;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
-import org.palladiosimulator.pcm.core.composition.Connector;
-import org.palladiosimulator.pcm.repository.OperationRequiredRole;
-import org.palladiosimulator.pcm.repository.RepositoryComponent;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceEnvironment;
 import org.palladiosimulator.pcm.system.System;
 
+import kubernetesModel.repository.Container;
 import kubernetesModel.repository.Pod;
 import kubernetesModel.resourceenvironment.KubernetesNode;
-import kubernetesModel.repository.Container;
 
 /**
  * This class provides utility methods needed for the K8sAllocationScheduler.
@@ -37,7 +30,7 @@ public class SchedulerUtils {
      *            The system with the pods.
      * @return Collection of Pods that exist in the system.
      */
-    protected static List<Pod> getPods(System system) {
+    public static List<Pod> getAssembledPodsFromSystem(System system) {
         List<AssemblyContext> contexts = system.getAssemblyContexts__ComposedStructure();
 
         List<Pod> pods = contexts.stream()
@@ -56,7 +49,7 @@ public class SchedulerUtils {
      *            ResourceEnvironment representing the K8s Cluster with the KubernetesNodes
      * @return Collection of KubernetesNodes in the ResourceEnvironment/Cluster
      */
-    protected static List<KubernetesNode> getNodes(ResourceEnvironment cluster) {
+    public static List<KubernetesNode> getNodes(ResourceEnvironment cluster) {
         List<ResourceContainer> containers = cluster.getResourceContainer_ResourceEnvironment();
 
         List<KubernetesNode> nodes = containers.stream()
@@ -75,8 +68,8 @@ public class SchedulerUtils {
      * @param allocation
      * @return unallocated pods from the system.
      */
-    protected static List<Pod> getUnallocatedPods(System system, Allocation allocation) {
-        List<Pod> pods = getPods(system);
+    public static List<Pod> getUnallocatedPods(System system, Allocation allocation) {
+        List<Pod> pods = getAssembledPodsFromSystem(system);
         List<AllocationContext> allocationContexts = allocation.getAllocationContexts_Allocation();
         List<Pod> scheduledPods = allocationContexts.stream()
             .map(context -> context.getAssemblyContext_AllocationContext())
@@ -89,6 +82,47 @@ public class SchedulerUtils {
     }
 
     /**
+     * Returns all the Unallocated AssemblyContexts that assemble Pods.
+     * 
+     * @param system
+     * @param alloaction
+     * @return List of AssemblyContexts that assemble Pods.
+     */
+    public static List<AssemblyContext> getUnallocatedPodAssemblies(System system, Allocation alloaction) {
+        List<AssemblyContext> podAssemblies = getPodAssemblies(system);
+        List<AllocationContext> allocations = alloaction.getAllocationContexts_Allocation();
+        List<AllocationContext> allocatedPods = allocations.stream()
+            .filter(alloc -> (alloc.getAssemblyContext_AllocationContext()
+                .getEncapsulatedComponent__AssemblyContext() instanceof Pod))
+            .collect(Collectors.toList());
+
+        for (AssemblyContext assembledPod : podAssemblies) {
+            for (AllocationContext alloc : allocatedPods) {
+                if (assembledPod.getId()
+                    .equals(alloc.getAssemblyContext_AllocationContext()
+                        .getId())) {
+                    podAssemblies.remove(assembledPod);
+                }
+            }
+        }
+        return podAssemblies;
+    }
+
+    /**
+     * This method returns all AssemblyContexts that contain a Pod in a given System.
+     * 
+     * @param system
+     *            The System with potentially assembled Pods.
+     * @return List of AssemblyContexts containing Pods.
+     */
+    public static List<AssemblyContext> getPodAssemblies(System system) {
+        List<AssemblyContext> assemblies = system.getAssemblyContexts__ComposedStructure();
+        return assemblies.stream()
+            .filter(assembly -> (assembly.getEncapsulatedComponent__AssemblyContext() instanceof Pod))
+            .collect(Collectors.toList()); // TODO bessere Lösung ohne instanceof?
+    }
+
+    /**
      * This method calculates for a given KubernetesNode and an Allocation, how much free cpu share
      * is left on this node.
      * 
@@ -98,7 +132,7 @@ public class SchedulerUtils {
      *            Allocation for which the left free cpu share is calculated.
      * @return int that represents the free cpu share of the node.
      */
-    protected static int calculateNodesUnrequestedCPUShare(KubernetesNode node, Allocation allocation) {
+    public static int calculateNodesUnrequestedCPUShare(KubernetesNode node, Allocation allocation) {
         int cpuSpecification = node.getCpu();
         List<AllocationContext> allocationContexts = allocation.getAllocationContexts_Allocation();
         List<ResourceContainer> nodeWithNestedContainers = node.getNestedResourceContainers__ResourceContainer();
@@ -108,8 +142,8 @@ public class SchedulerUtils {
         List<AllocationContext> contextsAllocatedOnNode = new ArrayList<AllocationContext>();
         for (ResourceContainer container : nodeWithNestedContainers) {
             List<AllocationContext> contextsToAdd = allocationContexts.stream()
-                .filter(ac -> ac.getResourceContainer_AllocationContext()
-                    .equals(container))
+                .filter(ac -> ac.getResourceContainer_AllocationContext().getId()
+                    .equals(container.getId()))
                 .collect(Collectors.toList());
             contextsAllocatedOnNode.addAll(contextsToAdd);
         }
@@ -137,8 +171,8 @@ public class SchedulerUtils {
     }
 
     /**
-     * This method calculates for a given KubernetesNode and an Allocation, how much free memory
-     * is left on this node.
+     * This method calculates for a given KubernetesNode and an Allocation, how much free memory is
+     * left on this node.
      * 
      * @param node
      *            for which the free share needs to be calculated.
@@ -146,7 +180,7 @@ public class SchedulerUtils {
      *            for which the left free memory share is calculated.
      * @return int that represents the free memory share of the node.
      */
-    protected static int calculateNodesUnrequestedMemory(KubernetesNode node, Allocation allocation) {
+    public static int calculateNodesUnrequestedMemory(KubernetesNode node, Allocation allocation) {
         int memorySpecification = node.getMemory();
         List<AllocationContext> allocationContexts = allocation.getAllocationContexts_Allocation();
         List<ResourceContainer> nodeWithNestedContainers = node.getNestedResourceContainers__ResourceContainer();
@@ -156,8 +190,8 @@ public class SchedulerUtils {
         List<AllocationContext> contextsAllocatedOnNode = new ArrayList<AllocationContext>();
         for (ResourceContainer container : nodeWithNestedContainers) {
             List<AllocationContext> contextsToAdd = allocationContexts.stream()
-                .filter(ac -> ac.getResourceContainer_AllocationContext()
-                    .equals(container))
+                .filter(ac -> ac.getResourceContainer_AllocationContext().getId()
+                        .equals(container.getId()))
                 .collect(Collectors.toList());
             contextsAllocatedOnNode.addAll(contextsToAdd);
         }

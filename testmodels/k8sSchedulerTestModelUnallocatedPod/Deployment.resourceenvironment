@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resenv:Deployment xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:resenv="org.palladiosimulator.kubernetesModel.resourceenvironment" name="TestDeployment" replicas="2">
+  <PodImageReference href="default.repository#_C3nzRLeeEeyyHJjz7N8N5Q"/>
+</resenv:Deployment>

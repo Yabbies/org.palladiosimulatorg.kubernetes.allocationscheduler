@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<allocation:Allocation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:allocation="http://palladiosimulator.org/PalladioComponentModel/Allocation/5.2" id="_JiPBICHdEd6lJo4DCALHMw" entityName="defaultAllocation">
+  <targetResourceEnvironment_Allocation href="My.resourceenvironment#/"/>
+  <system_Allocation href="default.system#_84D0kCHcEd6lJo4DCALHMw"/>
+  <allocationContexts_Allocation id="_KCkHACHdEd6lJo4DCALHMw" entityName="Allocation Loadbalancer on Master Node">
+    <resourceContainer_AllocationContext href="My.resourceenvironment#_R13WEreIEey_eo6N0lN0NQ"/>
+    <assemblyContext_AllocationContext href="default.system#_-uiy8LhjEeyjjf2HilH6cg"/>
+  </allocationContexts_Allocation>
+  <allocationContexts_Allocation id="_tYq20LhkEeyjjf2HilH6cg" entityName="Allocation Pod1 On Worker">
+    <resourceContainer_AllocationContext href="My.resourceenvironment#_GUTXYreIEey_eo6N0lN0NQ"/>
+    <assemblyContext_AllocationContext href="default.system#_LAGrMLhkEeyjjf2HilH6cg"/>
+  </allocationContexts_Allocation>
+  <allocationContexts_Allocation id="_yh2p0LtnEey40Jb8AJVUNA" entityName="Container Allocated On WorkerNodes NestedResourceContainer">
+    <resourceContainer_AllocationContext href="My.resourceenvironment#_qlaXtLtnEey40Jb8AJVUNA"/>
+    <assemblyContext_AllocationContext href="default.repository#_L6m2kLeeEeyyHJjz7N8N5Q"/>
+  </allocationContexts_Allocation>
+</allocation:Allocation>

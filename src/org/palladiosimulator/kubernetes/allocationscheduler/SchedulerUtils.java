@@ -11,6 +11,9 @@ import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceEnvironment;
 import org.palladiosimulator.pcm.system.System;
 
+import kubernetesModel.k8sconcepts.K8sStandardRequestLimit;
+import kubernetesModel.k8sconcepts.K8sconceptsFactory;
+import kubernetesModel.k8sconcepts.util.K8sconceptsAdapterFactory;
 import kubernetesModel.repository.Container;
 import kubernetesModel.repository.Pod;
 import kubernetesModel.resourceenvironment.KubernetesNode;
@@ -142,7 +145,8 @@ public class SchedulerUtils {
         List<AllocationContext> contextsAllocatedOnNode = new ArrayList<AllocationContext>();
         for (ResourceContainer container : nodeWithNestedContainers) {
             List<AllocationContext> contextsToAdd = allocationContexts.stream()
-                .filter(ac -> ac.getResourceContainer_AllocationContext().getId()
+                .filter(ac -> ac.getResourceContainer_AllocationContext()
+                    .getId()
                     .equals(container.getId()))
                 .collect(Collectors.toList());
             contextsAllocatedOnNode.addAll(contextsToAdd);
@@ -190,8 +194,9 @@ public class SchedulerUtils {
         List<AllocationContext> contextsAllocatedOnNode = new ArrayList<AllocationContext>();
         for (ResourceContainer container : nodeWithNestedContainers) {
             List<AllocationContext> contextsToAdd = allocationContexts.stream()
-                .filter(ac -> ac.getResourceContainer_AllocationContext().getId()
-                        .equals(container.getId()))
+                .filter(ac -> ac.getResourceContainer_AllocationContext()
+                    .getId()
+                    .equals(container.getId()))
                 .collect(Collectors.toList());
             contextsAllocatedOnNode.addAll(contextsToAdd);
         }
@@ -216,6 +221,34 @@ public class SchedulerUtils {
             }
         }
         return memorySpecification - allocatedMemory;
+    }
+
+    public static int calculatePodsCPURequests(Pod pod) {
+        List<Container> encapsulatedContainers = pod.getAssemblyContexts__ComposedStructure()
+            .stream()
+            .map(ac -> ac.getEncapsulatedComponent__AssemblyContext())
+            .filter(Container.class::isInstance)
+            .map(Container.class::cast)
+            .collect(Collectors.toList());
+        int cpuRequest = 0;
+        for (Container container : encapsulatedContainers) {
+            cpuRequest += container.getStandardRequest().getCpu().get(0);
+        }
+        return cpuRequest;
+    }
+    
+    public static int calculatePodsMemoryRequests(Pod pod) {
+        List<Container> encapsulatedContainers = pod.getAssemblyContexts__ComposedStructure()
+            .stream()
+            .map(ac -> ac.getEncapsulatedComponent__AssemblyContext())
+            .filter(Container.class::isInstance)
+            .map(Container.class::cast)
+            .collect(Collectors.toList());
+        int memoryRequest = 0;
+        for (Container container : encapsulatedContainers) {
+            memoryRequest += container.getStandardRequest().getMemory().get(0);
+        }
+        return memoryRequest;
     }
 
 }

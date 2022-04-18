@@ -12,6 +12,7 @@
     <semanticResources>pathmap://PCM_MODELS/PrimitiveTypes.repository</semanticResources>
     <semanticResources>My.k8sconcepts</semanticResources>
     <semanticResources>Deployment.resourceenvironment</semanticResources>
+    <semanticResources>requestlimit.k8sconcepts</semanticResources>
     <ownedViews xmi:type="viewpoint:DView" uid="_7cLwECCwEeqfDZoo5DmFaA">
       <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.palladiosimulator.editors.sirius.allocation/description/allocation.odesign#//@ownedViewpoints[name='Allocation']"/>
       <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_7eIQ0yCwEeqfDZoo5DmFaA" name="Allocation Diagram" repPath="#_7cLwESCwEeqfDZoo5DmFaA">

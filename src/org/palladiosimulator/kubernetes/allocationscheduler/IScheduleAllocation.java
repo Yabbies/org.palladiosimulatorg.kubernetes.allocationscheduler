@@ -8,12 +8,10 @@ import org.palladiosimulator.pcm.allocation.Allocation;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceEnvironment;
+import org.palladiosimulator.pcm.system.System;
 
 import kubernetesModel.repository.Pod;
-import kubernetesModel.resourceenvironment.Deployment;
 import kubernetesModel.resourceenvironment.KubernetesNode;
-
-import org.palladiosimulator.pcm.system.System;
 
 /**
  * This Interface provides methods to implement an AllocationScheduler for a PCM Kubernetes System.

@@ -1,5 +1,6 @@
 package org.palladiosimulator.kubernetes.allocationscheduler;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -163,12 +164,9 @@ public class SchedulerUtils {
 
         for (Container container : containerAllocatedOnNode) {
             // Check whether the container has a request as this is an optional attribute.
-            if (!container.getStandardRequest()
-                .getCpu()
-                .isEmpty()) {
+            if (container.getStandardRequest() != null) {
                 allocatedCPUShare += container.getStandardRequest()
-                    .getCpu()
-                    .get(0);
+                    .getCpu();
             }
         }
         return cpuSpecification - allocatedCPUShare;
@@ -184,8 +182,8 @@ public class SchedulerUtils {
      *            for which the left free memory share is calculated.
      * @return int that represents the free memory share of the node.
      */
-    public static int calculateNodesUnrequestedMemory(KubernetesNode node, Allocation allocation) {
-        int memorySpecification = node.getMemory();
+    public static long calculateNodesUnrequestedMemory(KubernetesNode node, Allocation allocation) {
+        long memorySpecification = node.getMemory();
         List<AllocationContext> allocationContexts = allocation.getAllocationContexts_Allocation();
         List<ResourceContainer> nodeWithNestedContainers = node.getNestedResourceContainers__ResourceContainer();
         nodeWithNestedContainers.add(node);
@@ -208,16 +206,13 @@ public class SchedulerUtils {
             .map(Container.class::cast)
             .collect(Collectors.toList());
 
-        int allocatedMemory = 0;
+        long allocatedMemory = 0;
 
         for (Container container : containerAllocatedOnNode) {
             // Check whether the container has a request as this is an optional attribute.
-            if (!container.getStandardRequest()
-                .getMemory()
-                .isEmpty()) {
+            if (container.getStandardRequest() != null) {
                 allocatedMemory += container.getStandardRequest()
-                    .getMemory()
-                    .get(0);
+                    .getMemory();
             }
         }
         return memorySpecification - allocatedMemory;
@@ -232,21 +227,21 @@ public class SchedulerUtils {
             .collect(Collectors.toList());
         int cpuRequest = 0;
         for (Container container : encapsulatedContainers) {
-            cpuRequest += container.getStandardRequest().getCpu().get(0);
+            cpuRequest += container.getStandardRequest().getCpu();
         }
         return cpuRequest;
     }
     
-    public static int calculatePodsMemoryRequests(Pod pod) {
+    public static long calculatePodsMemoryRequests(Pod pod) {
         List<Container> encapsulatedContainers = pod.getAssemblyContexts__ComposedStructure()
             .stream()
             .map(ac -> ac.getEncapsulatedComponent__AssemblyContext())
             .filter(Container.class::isInstance)
             .map(Container.class::cast)
             .collect(Collectors.toList());
-        int memoryRequest = 0;
+        long memoryRequest = 0;
         for (Container container : encapsulatedContainers) {
-            memoryRequest += container.getStandardRequest().getMemory().get(0);
+            memoryRequest += container.getStandardRequest().getMemory();
         }
         return memoryRequest;
     }

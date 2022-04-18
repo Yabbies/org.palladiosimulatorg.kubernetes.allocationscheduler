@@ -31,13 +31,11 @@ public class SchedulerUtilsTest {
 
     // paths to the used model files.
     private String k8sSchedulerTestModelSystem = "testmodels/k8sSchedulerTestModelUnallocatedPod/default.system";
-    private String k8sSchedulerTestModelDeployment = "testmodels/k8sSchedulerTestModelUnallocatedPod/Deployment.resourceenvironment";
     private String k8sSchedulerTestModelRepository = "testmodels/k8sSchedulerTestModelUnallocatedPod/default.repository";
     private String k8sSchedulerTestModelResourceEnvironment = "testmodels/k8sSchedulerTestModelUnallocatedPod/My.resourceenvironment";
     private String k8sSchedulerTestModelAllocation = "testmodels/k8sSchedulerTestModelUnallocatedPod/default.allocation";
 
     private org.palladiosimulator.pcm.system.System system;
-    private ResourceEnvironment deployment;
     private Repository repository;
     private ResourceEnvironment cluster;
     private Allocation allocation;
@@ -45,16 +43,14 @@ public class SchedulerUtilsTest {
     @BeforeEach
     public void loadSystems() {
         system = SchedulerLoaderUtils.loadSystem(k8sSchedulerTestModelSystem);
-        // deployment = SchedulerLoaderUtils.loadDeployment(k8sSchedulerTestModelDeployment);
         repository = SchedulerLoaderUtils.loadRepository(k8sSchedulerTestModelRepository);
         cluster = SchedulerLoaderUtils.loadResourceEnvironment(k8sSchedulerTestModelResourceEnvironment);
         allocation = SchedulerLoaderUtils.loadAllocation(k8sSchedulerTestModelAllocation);
     }
 
     /**
-     * The testmodel has only one Pod "Image".
-     * This image is assembled twice.
-     * Still as the referenced component (Pod) is the same, they got the same Ids.
+     * The testmodel has only one Pod "Image". This image is assembled twice. Still as the
+     * referenced component (Pod) is the same, they got the same Ids.
      */
     @Test
     public void testGetAssembledPodsFromSystem() {
@@ -134,6 +130,7 @@ public class SchedulerUtilsTest {
             .collect(Collectors.toList());
         KubernetesNode workerNode = nodes.get(0);
         int cpushare = SchedulerUtils.calculateNodesUnrequestedCPUShare(workerNode, allocation);
+        java.lang.System.out.println("Memory left:" + cpushare);
         assert (cpushare == 1000);
     }
 
@@ -149,7 +146,7 @@ public class SchedulerUtilsTest {
                 .equals("_GUTXYreIEey_eo6N0lN0NQ")))
             .collect(Collectors.toList());
         KubernetesNode workerNode = nodes.get(0);
-        int memory = SchedulerUtils.calculateNodesUnrequestedMemory(workerNode, allocation);
+        long memory = SchedulerUtils.calculateNodesUnrequestedMemory(workerNode, allocation);
         java.lang.System.out.println("Memory left:" + memory);
         assert (memory == 2048);
     }

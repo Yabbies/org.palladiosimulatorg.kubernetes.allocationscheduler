@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.palladiosimulator.pcm.allocation.Allocation;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
@@ -14,7 +13,6 @@ import org.palladiosimulator.pcm.resourceenvironment.ResourceEnvironment;
 import org.palladiosimulator.pcm.system.System;
 
 import kubernetesModel.repository.Pod;
-import kubernetesModel.resourceenvironment.Deployment;
 import kubernetesModel.resourceenvironment.KubernetesNode;
 import tools.mdsd.junit5utils.extensions.PlatformStandaloneExtension;
 
@@ -53,12 +51,12 @@ public class AllocationScheduler implements IScheduleAllocation {
     public Optional<KubernetesNode> schedulePod(Pod podToSchedule, ResourceEnvironment resourceenvironment,
             Allocation allocation) {
         int podsCPURequest = SchedulerUtils.calculatePodsCPURequests(podToSchedule);
-        int podsMemoryRequest = SchedulerUtils.calculatePodsMemoryRequests(podToSchedule);
+        long podsMemoryRequest = SchedulerUtils.calculatePodsMemoryRequests(podToSchedule);
         List<KubernetesNode> nodes = SchedulerUtils.getNodes(resourceenvironment);
 
         for (KubernetesNode node : nodes) {
             int freeCPU = SchedulerUtils.calculateNodesUnrequestedCPUShare(node, allocation);
-            int freeMemory = SchedulerUtils.calculateNodesUnrequestedMemory(node, allocation);
+            long freeMemory = SchedulerUtils.calculateNodesUnrequestedMemory(node, allocation);
             if ((freeCPU < podsCPURequest) || (freeMemory < podsMemoryRequest)) {
                 nodes.remove(node);
             }

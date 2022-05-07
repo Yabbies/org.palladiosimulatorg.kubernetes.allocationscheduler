@@ -19,28 +19,6 @@ import tools.mdsd.junit5utils.extensions.PlatformStandaloneExtension;
 @ExtendWith(PlatformStandaloneExtension.class)
 public class AllocationScheduler implements IScheduleAllocation {
 
-//    // paths to the used model files.
-//    private String k8sSchedulerTestModelSystem = "testmodels/k8sSchedulerTestModel/default.system";
-//    private String k8sSchedulerTestModelDeployment = "testmodels/k8sSchedulerTestModel/Deployment.resourceenvironment";
-//    private String k8sSchedulerTestModelRepository = "testmodels/k8sSchedulerTestModel/default.repository";
-//    private String k8sSchedulerTestModelResourceEnvironment = "testmodels/k8sSchedulerTestModel/My.resourceenvironment";
-//    private String k8sSchedulerTestModelAllocation = "testmodels/k8sSchedulerTestModel/default.allocation";
-//
-//    private org.palladiosimulator.pcm.system.System system;
-//    private ResourceEnvironment deployment;
-//    private Repository repository;
-//    private ResourceEnvironment cluster;
-//    private Allocation allocation;
-
-//    @BeforeEach
-//    public void loadSystems() {
-//        system = SchedulerLoaderUtils.loadSystem(k8sSchedulerTestModelSystem);
-//        deployment = SchedulerLoaderUtils.loadDeployment(k8sSchedulerTestModelDeployment);
-//        repository = SchedulerLoaderUtils.loadRepository(k8sSchedulerTestModelRepository);
-//        cluster = SchedulerLoaderUtils.loadResourceEnvironment(k8sSchedulerTestModelResourceEnvironment);
-//        allocation = SchedulerLoaderUtils.loadAllocation(k8sSchedulerTestModelAllocation);
-//    }
-
     @Override
     public Optional<AssemblyContext> identifyUnscheduledPod(System system, Allocation allocation) {
         List<AssemblyContext> unallocatedAsseblyPods = SchedulerUtils.getUnallocatedPodAssemblies(system, allocation);

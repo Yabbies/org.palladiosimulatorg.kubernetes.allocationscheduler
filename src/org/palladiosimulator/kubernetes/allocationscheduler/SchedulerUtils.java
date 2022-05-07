@@ -137,7 +137,7 @@ public class SchedulerUtils {
      * @return int that represents the free cpu share of the node.
      */
     public static int calculateNodesUnrequestedCPUShare(KubernetesNode node, Allocation allocation) {
-        int cpuSpecification = node.getCpu();
+        int cpuSpecification = node.getMillicores();
         List<AllocationContext> allocationContexts = allocation.getAllocationContexts_Allocation();
         List<ResourceContainer> nodeWithNestedContainers = node.getNestedResourceContainers__ResourceContainer();
         nodeWithNestedContainers.add(node);

@@ -100,15 +100,17 @@ public class SchedulerUtils {
                 .getEncapsulatedComponent__AssemblyContext() instanceof Pod))
             .collect(Collectors.toList());
 
+        List<AssemblyContext> toRemove = new ArrayList();
         for (AssemblyContext assembledPod : podAssemblies) {
             for (AllocationContext alloc : allocatedPods) {
                 if (assembledPod.getId()
                     .equals(alloc.getAssemblyContext_AllocationContext()
                         .getId())) {
-                    podAssemblies.remove(assembledPod);
+                    toRemove.add(assembledPod);
                 }
             }
         }
+        podAssemblies.removeAll(toRemove);
         return podAssemblies;
     }
 

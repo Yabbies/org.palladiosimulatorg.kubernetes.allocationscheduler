@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<system:System xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:composition="http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.2" xmlns:repo="org.palladiosimulator.kubernetesModel.repository" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.2" xmlns:system="http://palladiosimulator.org/PalladioComponentModel/System/5.2" id="_84D0kCHcEd6lJo4DCALHMw" entityName="defaultSystem">
+  <assemblyContexts__ComposedStructure id="_-uiy8LhjEeyjjf2HilH6cg" entityName="MMPackage">
+    <encapsulatedComponent__AssemblyContext xsi:type="repo:Pod" href="default.repository#_5BsCPc8-Eey-UO5WQaTdrg"/>
+  </assemblyContexts__ComposedStructure>
+  <assemblyContexts__ComposedStructure id="_LAGrMLhkEeyjjf2HilH6cg" entityName="MediaAccess">
+    <encapsulatedComponent__AssemblyContext xsi:type="repo:Pod" href="default.repository#__F_HBc8-Eey-UO5WQaTdrg"/>
+  </assemblyContexts__ComposedStructure>
+  <assemblyContexts__ComposedStructure id="_X_6N0M8_Eey-UO5WQaTdrg" entityName="FileStorage1">
+    <encapsulatedComponent__AssemblyContext xsi:type="repo:Pod" href="default.repository#_FdDWxc8_Eey-UO5WQaTdrg"/>
+  </assemblyContexts__ComposedStructure>
+  <assemblyContexts__ComposedStructure id="_ZvriUM8_Eey-UO5WQaTdrg" entityName="FileStorage2">
+    <encapsulatedComponent__AssemblyContext xsi:type="repo:Pod" href="default.repository#_FdDWxc8_Eey-UO5WQaTdrg"/>
+  </assemblyContexts__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:ProvidedDelegationConnector" id="_CvEpJLhkEeyjjf2HilH6cg" entityName="system -> serviceloadbalancer provided delegation" outerProvidedRole_ProvidedDelegationConnector="_6xDCr7hjEeyjjf2HilH6cg" assemblyContext_ProvidedDelegationConnector="_-uiy8LhjEeyjjf2HilH6cg">
+    <innerProvidedRole_ProvidedDelegationConnector href="default.repository#_JS4GobhfEeyjjf2HilH6cg"/>
+  </connectors__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_NcnJ5rhkEeyjjf2HilH6cg" entityName="loadbalancer to pod 1" requiringAssemblyContext_AssemblyConnector="_-uiy8LhjEeyjjf2HilH6cg" providingAssemblyContext_AssemblyConnector="_LAGrMLhkEeyjjf2HilH6cg">
+    <providedRole_AssemblyConnector href="default.repository#_R3PNH7eeEeyyHJjz7N8N5Q"/>
+    <requiredRole_AssemblyConnector href="default.repository#_a1vgdbhfEeyjjf2HilH6cg"/>
+  </connectors__ComposedStructure>
+  <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_6xDCr7hjEeyjjf2HilH6cg" entityName="systemsTestInterfaceProviding">
+    <providedInterface__OperationProvidedRole href="default.repository#_n7g-oCHbEd62GabW1zGSBw"/>
+  </providedRoles_InterfaceProvidingEntity>
+</system:System>

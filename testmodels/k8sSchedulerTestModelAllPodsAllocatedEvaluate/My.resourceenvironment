@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resourceenvironment:ResourceEnvironment xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:resenv="org.palladiosimulator.kubernetesModel.resourceenvironment" xmlns:resourceenvironment="http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.2" entityName="Cluster">
+  <linkingResources__ResourceEnvironment id="_jt7xUL9_Eey60INpDHCMXw" connectedResourceContainers_LinkingResource="_B0aZ0CHdEd6lJo4DCALHMw _GUTXYreIEey_eo6N0lN0NQ _R13WEreIEey_eo6N0lN0NQ">
+    <communicationLinkResourceSpecifications_LinkingResource id="_kAPCQL9_Eey60INpDHCMXw">
+      <communicationLinkResourceType_CommunicationLinkResourceSpecification href="pathmap://PCM_MODELS/Palladio.resourcetype#_o3sScH2AEdyH8uerKnHYug"/>
+      <latency_CommunicationLinkResourceSpecification specification="0.0"/>
+      <throughput_CommunicationLinkResourceSpecification specification="6.25 * 1000 * 1000"/>
+    </communicationLinkResourceSpecifications_LinkingResource>
+  </linkingResources__ResourceEnvironment>
+  <resourceContainer_ResourceEnvironment id="_B0aZ0CHdEd6lJo4DCALHMw" entityName="appserver">
+    <activeResourceSpecifications_ResourceContainer id="_ssJ0QYr-EeG0c6Q1F-wA1Q">
+      <schedulingPolicy href="pathmap://PCM_MODELS/Palladio.resourcetype#ProcessorSharing"/>
+      <activeResourceType_ActiveResourceSpecification href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+      <processingRate_ProcessingResourceSpecification specification="1.0810638521955225"/>
+    </activeResourceSpecifications_ResourceContainer>
+  </resourceContainer_ResourceEnvironment>
+  <resourceContainer_ResourceEnvironment xsi:type="resenv:KubernetesNode" id="_GUTXYreIEey_eo6N0lN0NQ" entityName="WorkerNode1" memory="2048" millicores="3000">
+    <activeResourceSpecifications_ResourceContainer id="_2QdJMLebEey-kPQ76_4vnQ" numberOfReplicas="3">
+      <schedulingPolicy href="pathmap://PCM_MODELS/Palladio.resourcetype#ProcessorSharing"/>
+      <activeResourceType_ActiveResourceSpecification href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+      <processingRate_ProcessingResourceSpecification specification="1.0810638521955225"/>
+    </activeResourceSpecifications_ResourceContainer>
+    <nestedResourceContainers__ResourceContainer id="_Gcz1Ys89Eey-UO5WQaTdrg" entityName="MMandPackagingContainer">
+      <activeResourceSpecifications_ResourceContainer id="_2fSzUM89Eey-UO5WQaTdrg">
+        <processingRate_ProcessingResourceSpecification specification="1.0810638521955225"/>
+      </activeResourceSpecifications_ResourceContainer>
+    </nestedResourceContainers__ResourceContainer>
+    <nestedResourceContainers__ResourceContainer id="_xgldos89Eey-UO5WQaTdrg" entityName="MediaAccessContainer">
+      <activeResourceSpecifications_ResourceContainer id="_3BqgkM89Eey-UO5WQaTdrg">
+        <processingRate_ProcessingResourceSpecification specification="1.0810638521955225"/>
+      </activeResourceSpecifications_ResourceContainer>
+    </nestedResourceContainers__ResourceContainer>
+  </resourceContainer_ResourceEnvironment>
+  <resourceContainer_ResourceEnvironment xsi:type="resenv:KubernetesNode" id="_75V2ps88Eey-UO5WQaTdrg" entityName="WorkerNode2" memory="16384" millicores="4000">
+    <activeResourceSpecifications_ResourceContainer id="_A1RlIM89Eey-UO5WQaTdrg" numberOfReplicas="4">
+      <processingRate_ProcessingResourceSpecification specification="1.0810638521955225"/>
+    </activeResourceSpecifications_ResourceContainer>
+    <nestedResourceContainers__ResourceContainer id="__Yeags89Eey-UO5WQaTdrg" entityName="FileStorageContainer1">
+      <activeResourceSpecifications_ResourceContainer id="_C8O1IM8-Eey-UO5WQaTdrg" numberOfReplicas="2">
+        <processingRate_ProcessingResourceSpecification specification="1.0810638521955225"/>
+      </activeResourceSpecifications_ResourceContainer>
+    </nestedResourceContainers__ResourceContainer>
+    <nestedResourceContainers__ResourceContainer id="__6UjUs89Eey-UO5WQaTdrg" entityName="FileStorageContainer2">
+      <activeResourceSpecifications_ResourceContainer id="_DTb0MM8-Eey-UO5WQaTdrg" numberOfReplicas="2">
+        <processingRate_ProcessingResourceSpecification specification="1.0810638521955225"/>
+      </activeResourceSpecifications_ResourceContainer>
+    </nestedResourceContainers__ResourceContainer>
+  </resourceContainer_ResourceEnvironment>
+  <resourceContainer_ResourceEnvironment xsi:type="resenv:KubernetesNode" id="_R13WEreIEey_eo6N0lN0NQ" entityName="MasterNode" isMasterNode="true" memory="1024" millicores="1000">
+    <activeResourceSpecifications_ResourceContainer id="_97hXcLebEey-kPQ76_4vnQ">
+      <schedulingPolicy href="pathmap://PCM_MODELS/Palladio.resourcetype#ProcessorSharing"/>
+      <activeResourceType_ActiveResourceSpecification href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+      <processingRate_ProcessingResourceSpecification specification="1.0810638521955225"/>
+    </activeResourceSpecifications_ResourceContainer>
+  </resourceContainer_ResourceEnvironment>
+</resourceenvironment:ResourceEnvironment>

@@ -1,5 +1,6 @@
 package org.palladiosimulator.kubernetes.allocationscheduler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,14 +32,16 @@ public class AllocationScheduler implements IScheduleAllocation {
         int podsCPURequest = SchedulerUtils.calculatePodsCPURequests(podToSchedule);
         long podsMemoryRequest = SchedulerUtils.calculatePodsMemoryRequests(podToSchedule);
         List<KubernetesNode> nodes = SchedulerUtils.getNodes(resourceenvironment);
-
+        
+        List<KubernetesNode> nodesToRemove = new ArrayList<KubernetesNode>();
         for (KubernetesNode node : nodes) {
             int freeCPU = SchedulerUtils.calculateNodesUnrequestedCPUShare(node, allocation);
             long freeMemory = SchedulerUtils.calculateNodesUnrequestedMemory(node, allocation);
             if ((freeCPU < podsCPURequest) || (freeMemory < podsMemoryRequest)) {
-                nodes.remove(node);
+                nodesToRemove.add(node);
             }
         }
+        nodes.removeAll(nodesToRemove);
         return Optional.ofNullable(nodes.get(0));
     }
 

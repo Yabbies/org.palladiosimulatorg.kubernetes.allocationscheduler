@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<allocation:Allocation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:allocation="http://palladiosimulator.org/PalladioComponentModel/Allocation/5.2" id="_JiPBICHdEd6lJo4DCALHMw" entityName="defaultAllocation">
+  <targetResourceEnvironment_Allocation href="My.resourceenvironment#/"/>
+  <system_Allocation href="default.system#_84D0kCHcEd6lJo4DCALHMw"/>
+  <allocationContexts_Allocation id="_l6DtIM9CEey-UO5WQaTdrg" entityName="AllocationMMNode">
+    <resourceContainer_AllocationContext href="My.resourceenvironment#_75V2ps88Eey-UO5WQaTdrg"/>
+    <assemblyContext_AllocationContext href="default.system#_-uiy8LhjEeyjjf2HilH6cg"/>
+  </allocationContexts_Allocation>
+  <allocationContexts_Allocation id="_3dE38M9CEey-UO5WQaTdrg" entityName="AllocationMMInner">
+    <resourceContainer_AllocationContext href="My.resourceenvironment#_Gcz1Ys89Eey-UO5WQaTdrg"/>
+    <assemblyContext_AllocationContext href="default.repository#_8rZTwM8-Eey-UO5WQaTdrg"/>
+  </allocationContexts_Allocation>
+  <allocationContexts_Allocation id="_lAZ2YM9EEey-UO5WQaTdrg" entityName="MAPod">
+    <resourceContainer_AllocationContext href="My.resourceenvironment#_GUTXYreIEey_eo6N0lN0NQ"/>
+    <assemblyContext_AllocationContext href="step3.system#_ckJGoM9CEey-UO5WQaTdrg"/>
+  </allocationContexts_Allocation>
+  <allocationContexts_Allocation id="_lZQbQM9EEey-UO5WQaTdrg" entityName="MAContainer">
+    <resourceContainer_AllocationContext href="My.resourceenvironment#_xgldos89Eey-UO5WQaTdrg"/>
+    <assemblyContext_AllocationContext href="default.repository#_BK5k8M8_Eey-UO5WQaTdrg"/>
+  </allocationContexts_Allocation>
+</allocation:Allocation>
